@@ -22,7 +22,10 @@ function checkStrength(val) {
   if (/[^A-Za-z0-9]/.test(val)) score++;
 
   const bars = document.getElementById('strength-bars');
-  bars.className = 'strength' + (score ? ' s' + score : '');
+
+  if (bars) {
+    bars.className = 'strength' + (score ? ' s' + score : '');
+  }
 
   const hints = [
     'At least 8 characters',
@@ -32,32 +35,89 @@ function checkStrength(val) {
     'Strong password'
   ];
 
-  document.getElementById('pwd-hint').textContent = hints[score];
+  const hint = document.getElementById('pwd-hint');
+
+  if (hint) {
+    hint.textContent = hints[score];
+  }
 }
 
 // SIGNUP
-document.querySelector('.signup-btn').addEventListener('click', async () => {
+const signupBtn = document.querySelector('.signup-btn');
 
-  const firstName = document.getElementById('s-first').value;
-  const lastName = document.getElementById('s-last').value;
-  const email = document.getElementById('s-email').value;
-  const password = document.getElementById('s-password').value;
+if (signupBtn) {
 
-  const response = await fetch('/signup', {
-    method: 'POST',
-    headers: {
-      'Content-Type': 'application/json'
-    },
-    body: JSON.stringify({
-      firstName,
-      lastName,
-      email,
-      password
-    })
+  signupBtn.addEventListener('click', async () => {
+
+    const firstName = document.getElementById('s-first').value;
+    const lastName = document.getElementById('s-last').value;
+    const email = document.getElementById('s-email').value;
+    const password = document.getElementById('s-password').value;
+
+    try {
+
+      const response = await fetch('/signup', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          firstName,
+          lastName,
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      alert(data.message);
+
+    } catch (error) {
+
+      console.log(error);
+      alert('Signup failed');
+
+    }
+
   });
 
-  const data = await response.json();
+}
 
-  alert(data.message);
+// LOGIN
+const loginBtn = document.querySelector('#login .btn-primary');
 
-});
+if (loginBtn) {
+
+  loginBtn.addEventListener('click', async () => {
+
+    const email = document.getElementById('l-email').value;
+    const password = document.getElementById('l-password').value;
+
+    try {
+
+      const response = await fetch('/login', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify({
+          email,
+          password
+        })
+      });
+
+      const data = await response.json();
+
+      alert(data.message);
+
+    } catch (error) {
+
+      console.log(error);
+      alert('Login failed');
+
+    }
+
+  });
+
+}

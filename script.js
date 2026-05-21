@@ -34,3 +34,71 @@ function checkStrength(val) {
 
   document.getElementById('pwd-hint').textContent = hints[score];
 }
+
+// ================= SIGNUP =================
+
+document.querySelector('.signup-btn').addEventListener('click', async () => {
+
+  const firstName = document.getElementById('s-first').value;
+  const lastName = document.getElementById('s-last').value;
+  const email = document.getElementById('s-email').value;
+  const password = document.getElementById('s-password').value;
+
+  try {
+
+    const res = await fetch('/signup', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        firstName,
+        lastName,
+        email,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+  } catch (err) {
+    console.log(err);
+    alert('Signup failed');
+  }
+
+});
+
+// ================= LOGIN =================
+
+document.querySelector('#login .btn-primary').addEventListener('click', async () => {
+
+  const email = document.getElementById('l-email').value;
+  const password = document.getElementById('l-password').value;
+
+  try {
+
+    const res = await fetch('/login', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify({
+        email,
+        password
+      })
+    });
+
+    const data = await res.json();
+
+    alert(data.message);
+
+  } catch (err) {
+
+    console.log(err);
+    alert('Login failed');
+
+  }
+
+});

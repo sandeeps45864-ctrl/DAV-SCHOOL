@@ -34,3 +34,30 @@ function checkStrength(val) {
 
   document.getElementById('pwd-hint').textContent = hints[score];
 }
+
+// SIGNUP
+document.querySelector('.signup-btn').addEventListener('click', async () => {
+
+  const firstName = document.getElementById('s-first').value;
+  const lastName = document.getElementById('s-last').value;
+  const email = document.getElementById('s-email').value;
+  const password = document.getElementById('s-password').value;
+
+  const response = await fetch('/signup', {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json'
+    },
+    body: JSON.stringify({
+      firstName,
+      lastName,
+      email,
+      password
+    })
+  });
+
+  const data = await response.json();
+
+  alert(data.message);
+
+});

@@ -1,0 +1,3 @@
+MONGO_URI="mongodb+srv://sandeep4235:sandeep4235%40@cluster0.3m02ogb.mongodb.net/authDB?retryWrites=true&w=majority"
+
+PORT=5000

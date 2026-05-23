@@ -2,21 +2,13 @@ window.addEventListener('scroll', () => {
 
     const navbar = document.querySelector('.navbar');
 
-    if (navbar) {
-
-        if (window.scrollY > 50) {
-            navbar.style.background = 'rgba(11,61,145,0.95)';
-        } else {
-            navbar.style.background = 'rgba(11,61,145,0.7)';
-        }
-
+    if (window.scrollY > 50) {
+        navbar.style.background = 'rgba(11,61,145,0.95)';
+    } else {
+        navbar.style.background = 'rgba(11,61,145,0.7)';
     }
 
 });
-
-
-
-// 3D Card Effect
 
 const cards = document.querySelectorAll(
 '.stat-card, .facility-card, .feature-box, .achievement-card'
@@ -43,13 +35,9 @@ cards.forEach(card => {
 
 });
 
-
-
-// Admission Form Submit
-
 const form = document.getElementById("admissionForm");
 
-if (form) {
+if(form){
 
     form.addEventListener("submit", async (e) => {
 
@@ -67,18 +55,17 @@ if (form) {
 
         try {
 
-            const response = await fetch(
-                "https://signup-login-1-b57h.onrender.com/admission",
-                {
-                    method: "POST",
+            const response = await fetch("https://signup-login-1-b57h.onrender.com/admission", {
 
-                    headers: {
-                        "Content-Type": "application/json"
-                    },
+                method: "POST",
 
-                    body: JSON.stringify(formData)
-                }
-            );
+                headers: {
+                    "Content-Type": "application/json"
+                },
+
+                body: JSON.stringify(formData)
+
+            });
 
             const data = await response.json();
 
@@ -95,69 +82,5 @@ if (form) {
         }
 
     });
-
-}
-
-
-
-// LOGIN / SIGNUP TABS
-
-function switchTab(tab) {
-
-    const tabs = document.querySelectorAll('.tab');
-    const panels = document.querySelectorAll('.panel');
-
-    tabs.forEach((t, i) => {
-
-        t.classList.toggle(
-            'active',
-            (i === 0) === (tab === 'login')
-        );
-
-    });
-
-    panels.forEach((p) => {
-
-        p.classList.toggle(
-            'active',
-            p.id === tab
-        );
-
-    });
-
-}
-
-
-
-// PASSWORD STRENGTH
-
-function checkStrength(val) {
-
-    let score = 0;
-
-    if (val.length >= 8) score++;
-    if (/[A-Z]/.test(val)) score++;
-    if (/[0-9]/.test(val)) score++;
-    if (/[^A-Za-z0-9]/.test(val)) score++;
-
-    const bars = document.getElementById('strength-bars');
-
-    if (bars) {
-        bars.className = 'strength' + (score ? ' s' + score : '');
-    }
-
-    const hints = [
-        'At least 8 characters',
-        'Too short — add more characters',
-        'Add numbers or symbols',
-        'Almost there — try a symbol',
-        'Strong password'
-    ];
-
-    const hint = document.getElementById('pwd-hint');
-
-    if (hint) {
-        hint.textContent = hints[score];
-    }
 
 }

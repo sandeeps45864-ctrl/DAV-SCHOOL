@@ -1,86 +1,137 @@
-window.addEventListener('scroll', () => {
+window.addEventListener("scroll", () => {
 
-    const navbar = document.querySelector('.navbar');
+    const navbar =
+    document.querySelector(".navbar");
 
-    if (window.scrollY > 50) {
-        navbar.style.background = 'rgba(11,61,145,0.95)';
-    } else {
-        navbar.style.background = 'rgba(11,61,145,0.7)';
+    if(window.scrollY > 50){
+
+        navbar.style.background =
+        "#061f4f";
+
+    }else{
+
+        navbar.style.background =
+        "#0B3D91";
+
     }
 
 });
 
-const cards = document.querySelectorAll(
-'.stat-card, .facility-card, .feature-box, .achievement-card'
+
+
+
+
+const form =
+document.getElementById(
+    "admissionForm"
 );
 
-cards.forEach(card => {
+form.addEventListener(
+    "submit",
 
-    card.addEventListener('mousemove', (e) => {
+    async (e) => {
 
-        const x = e.offsetX;
-        const y = e.offsetY;
+    e.preventDefault();
 
-        card.style.transform =
-        `rotateY(${x / 25}deg) rotateX(${y / 25}deg) translateY(-10px)`;
+    const formData = {
 
-    });
+        name:
+        document.getElementById("name").value,
 
-    card.addEventListener('mouseleave', () => {
+        email:
+        document.getElementById("email").value,
 
-        card.style.transform =
-        'rotateY(0deg) rotateX(0deg)';
+        phone:
+        document.getElementById("phone").value,
 
-    });
+        className:
+        document.getElementById("className").value,
+
+        message:
+        document.getElementById("message").value
+
+    };
+
+    try{
+
+        const response =
+        await fetch(
+
+"https://signup-login-1-b57h.onrender.com/api/admission",
+
+        {
+
+            method:"POST",
+
+            headers:{
+
+                "Content-Type":
+                "application/json"
+
+            },
+
+            body:JSON.stringify(formData)
+
+        });
+
+        const data =
+        await response.json();
+
+        alert(data.message);
+
+        form.reset();
+
+    }catch(error){
+
+        alert("Server Error");
+
+    }
 
 });
 
-const form = document.getElementById("admissionForm");
 
-if(form){
 
-    form.addEventListener("submit", async (e) => {
 
-        e.preventDefault();
 
-        const formData = {
+async function loadGallery(){
 
-            name: document.getElementById("name").value,
-            email: document.getElementById("email").value,
-            phone: document.getElementById("phone").value,
-            className: document.getElementById("className").value,
-            message: document.getElementById("message").value
+    try{
 
-        };
+        const response =
+        await fetch(
 
-        try {
+"https://signup-login-1-b57h.onrender.com/api/gallery"
 
-            const response = await fetch("https://signup-login-1-b57h.onrender.com/admission", {
+        );
 
-                method: "POST",
+        const data =
+        await response.json();
 
-                headers: {
-                    "Content-Type": "application/json"
-                },
+        const galleryGrid =
+        document.getElementById(
+            "galleryGrid"
+        );
 
-                body: JSON.stringify(formData)
+        galleryGrid.innerHTML = "";
 
-            });
+        data.forEach((item)=>{
 
-            const data = await response.json();
+            galleryGrid.innerHTML += `
 
-            alert(data.message);
+            <img
+            src="https://signup-login-1-b57h.onrender.com/uploads/${item.image}"
+            >
 
-            form.reset();
+            `;
 
-        } catch (error) {
+        });
 
-            console.log(error);
+    }catch(error){
 
-            alert("❌ Cannot Connect To Server");
+        console.log(error);
 
-        }
-
-    });
+    }
 
 }
+
+loadGallery();

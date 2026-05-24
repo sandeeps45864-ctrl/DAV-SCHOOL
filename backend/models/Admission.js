@@ -2,30 +2,19 @@ const mongoose = require("mongoose");
 
 const admissionSchema = new mongoose.Schema({
 
-    name: {
-        type: String,
-        required: true
-    },
+    name: String,
 
-    email: {
-        type: String,
-        required: true
-    },
+    email: String,
 
-    phone: {
-        type: String,
-        required: true
-    },
+    phone: String,
 
-    className: {
-        type: String,
-        required: true
-    },
+    className: String,
 
-    message: {
-        type: String
-    }
+    message: String
 
 });
 
-module.exports = mongoose.model("Admission", admissionSchema);
+module.exports = mongoose.model(
+    "Admission",
+    admissionSchema
+);

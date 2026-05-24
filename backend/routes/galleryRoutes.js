@@ -4,17 +4,19 @@ const router = express.Router();
 
 const multer = require("multer");
 
+const path = require("path");
+
 const Gallery = require("../models/Gallery");
 
 const storage = multer.diskStorage({
 
-    destination:(req,file,cb)=>{
+    destination: (req, file, cb) => {
 
-        cb(null,"uploads/");
+        cb(null, path.join(__dirname, "../uploads"));
 
     },
 
-    filename:(req,file,cb)=>{
+    filename: (req, file, cb) => {
 
         cb(
             null,
@@ -25,20 +27,34 @@ const storage = multer.diskStorage({
 
 });
 
-const upload = multer({storage});
+const upload = multer({ storage });
+
+
+
+
 
 router.post(
     "/",
     upload.single("image"),
 
-    async(req,res)=>{
+    async (req, res) => {
 
-        try{
+        try {
 
-            const newImage =
-            new Gallery({
+            if (!req.file) {
 
-                image:req.file.filename
+                return res.status(400).json({
+
+                    success: false,
+                    message: "No Image Uploaded"
+
+                });
+
+            }
+
+            const newImage = new Gallery({
+
+                image: req.file.filename
 
             });
 
@@ -46,40 +62,46 @@ router.post(
 
             res.json({
 
-                success:true,
-                message:"Image Uploaded"
+                success: true,
+                message: "Image Uploaded Successfully"
 
             });
 
-        }catch(error){
+        } catch (error) {
 
             console.log(error);
 
             res.status(500).json({
 
-                success:false,
-                message:"Server Error"
+                success: false,
+                message: "Server Error"
 
             });
 
         }
 
-});
+    }
+);
 
-router.get("/",async(req,res)=>{
 
-    try{
 
-        const images =
-        await Gallery.find();
+
+
+router.get("/", async (req, res) => {
+
+    try {
+
+        const images = await Gallery.find();
 
         res.json(images);
 
-    }catch(error){
+    } catch (error) {
+
+        console.log(error);
 
         res.status(500).json({
 
-            success:false
+            success: false
 
         });
 

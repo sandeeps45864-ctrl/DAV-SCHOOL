@@ -22,16 +22,10 @@ const storage = multer.diskStorage({
             null,
             Date.now() + "-" + file.originalname
         );
-
     }
-
 });
 
 const upload = multer({ storage });
-
-
-
-
 
 router.post(
     "/",
@@ -41,21 +35,9 @@ router.post(
 
         try {
 
-            if (!req.file) {
-
-                return res.status(400).json({
-
-                    success: false,
-                    message: "No Image Uploaded"
-
-                });
-
-            }
-
             const newImage = new Gallery({
 
                 image: req.file.filename
-
             });
 
             await newImage.save();
@@ -63,8 +45,7 @@ router.post(
             res.json({
 
                 success: true,
-                message: "Image Uploaded Successfully"
-
+                message: "Image Uploaded"
             });
 
         } catch (error) {
@@ -75,17 +56,9 @@ router.post(
 
                 success: false,
                 message: "Server Error"
-
             });
-
         }
-
-    }
-);
-
-
-
-
+});
 
 router.get("/", async (req, res) => {
 
@@ -97,16 +70,11 @@ router.get("/", async (req, res) => {
 
     } catch (error) {
 
-        console.log(error);
-
         res.status(500).json({
 
             success: false
-
         });
-
     }
-
 });
 
 module.exports = router;
